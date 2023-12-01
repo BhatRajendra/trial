@@ -80,66 +80,6 @@ mysql> show tables
 +------------------+
 3 rows in set (0.00 sec)
 
-mysql> select * from customer
-    -> ;
-+---------+----------+--------+-------+-------------+
-| cust_id | name     | city   | grade | salesman_id |
-+---------+----------+--------+-------+-------------+
-|     101 | nayana   | blore  |     2 |           1 |
-|     102 | abhilash | mumbai |     1 |           2 |
-|     103 | deepak   | blore  |     1 |           1 |
-|     104 | gaurav   | delhi  |     2 |           3 |
-+---------+----------+--------+-------+-------------+
-4 rows in set (0.21 sec)
-
-mysql> update customer set grade 200 where cust_id=101;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '200 where cust_id=101' at line 1
-mysql> update customer set grade=200 where cust_id=101;
-Query OK, 1 row affected (0.09 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql> select * from customer;
-+---------+----------+--------+-------+-------------+
-| cust_id | name     | city   | grade | salesman_id |
-+---------+----------+--------+-------+-------------+
-|     101 | nayana   | blore  |   200 |           1 |
-|     102 | abhilash | mumbai |     1 |           2 |
-|     103 | deepak   | blore  |     1 |           1 |
-|     104 | gaurav   | delhi  |     2 |           3 |
-+---------+----------+--------+-------+-------------+
-4 rows in set (0.00 sec)
-
-mysql> update customer set grade=100 where cust_id=102;
-Query OK, 1 row affected (0.74 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql> update customer set grade=400 where cust_id=103;
-Query OK, 1 row affected (0.08 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql> update customer set grade=300 where cust_id=103;
-Query OK, 1 row affected (0.08 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql> update customer set grade=400 where cust_id=103;
-Query OK, 1 row affected (0.05 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-mysql> select * from customer;
-+---------+----------+--------+-------+-------------+
-| cust_id | name     | city   | grade | salesman_id |
-+---------+----------+--------+-------+-------------+
-|     101 | nayana   | blore  |   200 |           1 |
-|     102 | abhilash | mumbai |   100 |           2 |
-|     103 | deepak   | blore  |   400 |           1 |
-|     104 | gaurav   | delhi  |     2 |           3 |
-+---------+----------+--------+-------+-------------+
-4 rows in set (0.01 sec)
-
-mysql> update customer set grade=300 where cust_id=104;
-Query OK, 1 row affected (0.38 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
 mysql> select * from customer;
 +---------+----------+--------+-------+-------------+
 | cust_id | name     | city   | grade | salesman_id |
@@ -149,7 +89,17 @@ mysql> select * from customer;
 |     103 | deepak   | blore  |   400 |           1 |
 |     104 | gaurav   | delhi  |   300 |           3 |
 +---------+----------+--------+-------+-------------+
-4 rows in set (0.00 sec)
+4 rows in set (0.23 sec)
+
+mysql> select * from salesman;
++-------------+----------+--------+------------+
+| salesman_id | name     | city   | commission |
++-------------+----------+--------+------------+
+|           1 | rajendra | blore  |         10 |
+|           2 | shravan  | mumbai |         20 |
+|           3 | pradhaan | delhi  |          5 |
++-------------+----------+--------+------------+
+3 rows in set (0.00 sec)
 
 mysql> select * from orders;
 +--------+--------+------------+---------+-------------+
@@ -161,79 +111,13 @@ mysql> select * from orders;
 +--------+--------+------------+---------+-------------+
 3 rows in set (0.00 sec)
 
-mysql> select * from salesman;
-+-------------+----------+--------+------------+
-| salesman_id | name     | city   | commission |
-+-------------+----------+--------+------------+
-|           1 | rajendra | blore  |         10 |
-|           2 | shravan  | mumbai |         20 |
-|           3 | pradhaan | delhi  |          5 |
-+-------------+----------+--------+------------+
-3 rows in set (0.01 sec)
-
-mysql> select grade,count(distinct cust_id) from customer group by grade having grade> (select avg(grade) from customer where city=blore));
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
-mysql> select grade,count(distinct cust_id) from customer group by grade having grade> (select avg(grade) from customer where city=blore);
-ERROR 1054 (42S22): Unknown column 'blore' in 'where clause'
 mysql> select grade,count(distinct cust_id) from customer group by grade having grade> (select avg(grade) from customer where city='blore');
 +-------+-------------------------+
 | grade | count(distinct cust_id) |
 +-------+-------------------------+
 |   400 |                       1 |
 +-------+-------------------------+
-1 row in set (0.02 sec)
-
-mysql> select grade,count(distinct cust_id) from customer group by grade where grade> (select avg(grade) from customer where city='blore');
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where grade> (select avg(grade) from customer where city='blore')' at line 1
-mysql> select grade,count(distinct cust_id) from customer group by grade having grade>= (select avg(grade) from customer where city='blore');
-+-------+-------------------------+
-| grade | count(distinct cust_id) |
-+-------+-------------------------+
-|   300 |                       1 |
-|   400 |                       1 |
-+-------+-------------------------+
-2 rows in set (0.00 sec)
-
-mysql> select grade,count(distinct cust_id) as count from customer group by grade having grade>= (select avg(grade) from customer where city='
-blore');
-+-------+-------+
-| grade | count |
-+-------+-------+
-|   300 |     1 |
-|   400 |     1 |
-+-------+-------+
-2 rows in set (0.00 sec)
-
-mysql> select grade,count(distinct cust_id) as count from customer having grade>= (select avg(grade) from customer where city='blore');
-ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'order5.customer.grade'; this is incompatible with sql_mode=only_full_group_by
-mysql> select grade,count(distinct cust_id) as count from customer where  grade>= (select avg(grade) from customer where city='blore');
-ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'order5.customer.grade'; this is incompatible with sql_mode=only_full_group_by
-mysql> 
-
-^C
-mysql> 
-mysql> 
-mysql> 
-mysql> 
-mysql> select name,salesman_id from salesman a where 1<(select count(*) from customer where salesman_id=a.salesman_id);
-+----------+-------------+
-| name     | salesman_id |
-+----------+-------------+
-| rajendra |           1 |
-+----------+-------------+
-1 row in set (0.00 sec)
-
-mysql> select name,salesman_id as id from salesman where 1<(select count(*) from customer where salesman_id=id);
-ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
-mysql> select name,salesman_id as id from salesman where 1<(select count(*) from customer where salesman_id=salesman_id);
-+----------+----+
-| name     | id |
-+----------+----+
-| rajendra |  1 |
-| shravan  |  2 |
-| pradhaan |  3 |
-+----------+----+
-3 rows in set (0.00 sec)
+1 row in set (0.03 sec)
 
 mysql> select name,salesman_id from salesman a where 1<(select count(*) from customer where salesman_id=a.salesman_id);
 +----------+-------------+
@@ -243,20 +127,5 @@ mysql> select name,salesman_id from salesman a where 1<(select count(*) from cus
 +----------+-------------+
 1 row in set (0.00 sec)
 
-mysql> (select count(*) from customer where salesman_id=salesman_id);
-+----------+
-| count(*) |
-+----------+
-|        4 |
-+----------+
-1 row in set (0.00 sec)
-
-mysql> (select count(*) from customer where salesman_id=(salesman_id from salesman));
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from salesman))' at line 1
-mysql> select name,salesman_id from salesman a where 1<(select count(*) from customer where salesman_id=3);
-Empty set (0.00 sec)
-
-mysql> select name,salesman_id from salesman a where 1<(select count(*) from customer where salesman_id=2);
-Empty set (0.00 sec)
-
 mysql> 
+
