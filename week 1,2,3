@@ -1,0 +1,18 @@
+create table salesman(salesman_id integer,name varchar(20),city varchar(20),commission integer,primary key(salesman_id));
+create table customer(cust_id integer, name varchar(20),city varchar(20),grade integer,salesman_id integer,primary key(cust_id),foreign key(salesman_id) references salesman(salesman_id) on delete cascade;
+create table orders(ord_no integer,amount integer,date date,cust_id integer,salesman_id integer,primary key(ord_no),foreign key(cust_id) references customer(cust_id),foreign key(salesman_id) references salesman(salesman_id) on delete cascade);
+
+
+mysql> insert into salesman values("1","rajendra","blore","10");
+mysql> insert into salesman values("2","shravan","mumbai","20");
+mysql> insert into salesman values("3","pradhaan","delhi","5");
+
+mysql> insert into customer values("101","nayana","blore","200","1");
+mysql> insert into customer values("102","abhilash","mumbai","100","2");
+mysql> insert into customer values("103","deepak","blore","400","1");
+mysql> insert into customer values("104","gaurav","delhi","300","3");
+
+
+mysql> insert into orders values("201","2001","2023-11-24","101","1");
+mysql> insert into orders values("202","5001","2023-1-24","102","1");
+mysql> insert into orders values("203","8001","2023-3-24","103","2");
