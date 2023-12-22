@@ -1,0 +1,266 @@
+mysql> create database movie126;
+Query OK, 1 row affected (0.24 sec)
+
+mysql> use movie126;
+Database changed
+
+mysql> create table actor(
+    -> act_id integer,
+    -> act_name varchar(20),
+    -> act_gender char(1),
+    -> primary key (act_id));
+Query OK, 0 rows affected (0.88 sec)
+
+mysql> create table director(
+    -> dir_id integer,
+    -> dir_name varchar(20),
+    -> dir_phone bigint(10),
+    -> primary key (dir_id));
+Query OK, 0 rows affected, 1 warning (1.16 sec)
+
+mysql> create table movies(
+    -> mov_id integer,
+    -> mov_title varchar(20),
+    -> mov_year integer,
+    -> mov_lang varchar(15),
+    -> dir_id integer,
+    -> primary key(mov_id),
+    -> foreign key(dir_id) references director(dir_id));
+Query OK, 0 rows affected (1.18 sec)
+
+mysql> create table movie_cast(
+    -> act_id integer,
+    -> mov_id integer,
+    -> role varchar(10),
+    -> primary key(act_id,mov_id),
+    -> foreign key(act_id) references actor(act_id),
+    -> foreign key(mov_id) references movies(mov_id));
+Query OK, 0 rows affected (0.65 sec)
+
+mysql> create table rating (
+    -> mov_id integer,
+    -> rev_stars varchar(25),
+    -> primary key (mov_id),
+    -> foreign key (mov_id) references movies(mov_id));
+Query OK, 0 rows affected (0.61 sec)
+
+//all table creations done
+
+mysql> show tables;
++--------------------+
+| Tables_in_movie126 |
++--------------------+
+| actor              |
+| director           |
+| movie_cast         |
+| movies             |
+| rating             |
++--------------------+
+5 rows in set (0.00 sec)
+
+//inserting the values now
+
+//actor table
+
+mysql> insert into actor values (301,"anushka","f");
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into actor values (302,"prabhas","m");
+Query OK, 1 row affected (0.27 sec)
+
+mysql> insert into actor values (303,"punith","m");
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into actor values (304,"jermy","m");
+Query OK, 1 row affected (0.22 sec)
+
+//director table
+
+mysql> insert into director values(60,"rajamouli",8751611001);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into director values(61,"hitchcock",7766138911);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into director values(62,"faran",9986776531);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into director values(63,"steven spielberg",8989776530);
+Query OK, 1 row affected (0.08 sec)
+
+//movies table
+
+mysql> insert into movies values(1001,"bahubali",2017,"telagu",60);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into movies values(1002,"bahubali-1",2015,"telagu",60);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into movies values(1003,"akash",2008,"kannada",61);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into movies values(1004,"war house",2011,"english",63);
+Query OK, 1 row affected (0.09 sec)
+
+//movie_cast table
+
+mysql> insert into movie_cast values(301,1002,"heroine");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into movie_cast values(301,1001,"heroine");
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into movie_cast values(303,1003,"hero");
+Query OK, 1 row affected (0.63 sec)
+
+mysql> insert into movie_cast values(303,1004,"guest");
+Query OK, 1 row affected (0.37 sec)
+
+mysql> insert into movie_cast values(304,1004,"hero");
+Query OK, 1 row affected (0.40 sec)
+
+//rating table
+
+mysql> insert into rating values(1001,4);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into rating values(1002,2);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into rating values(1003,5);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into rating values(1004,1);
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from actor;
++--------+----------+------------+
+| act_id | act_name | act_gender |
++--------+----------+------------+
+|    301 | anushka  | f          |
+|    302 | prabhas  | m          |
+|    303 | punith   | m          |
+|    304 | jermy    | m          |
++--------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from director;
++--------+------------------+------------+
+| dir_id | dir_name         | dir_phone  |
++--------+------------------+------------+
+|     60 | rajamouli        | 8751611001 |
+|     61 | hitchcock        | 7766138911 |
+|     62 | faran            | 9986776531 |
+|     63 | steven spielberg | 8989776530 |
++--------+------------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from movies
+    -> ;
++--------+------------+----------+----------+--------+
+| mov_id | mov_title  | mov_year | mov_lang | dir_id |
++--------+------------+----------+----------+--------+
+|   1001 | bahubali-2 |     2017 | telagu   |     60 |
+|   1002 | bahubali-1 |     2015 | telagu   |     60 |
+|   1003 | akash      |     2008 | kannada  |     61 |
+|   1004 | war house  |     2011 | english  |     63 |
++--------+------------+----------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from movie_cast;
++--------+--------+---------+
+| act_id | mov_id | role    |
++--------+--------+---------+
+|    301 |   1001 | heroine |
+|    301 |   1002 | heroine |
+|    303 |   1003 | hero    |
+|    303 |   1002 | guest   |
+|    304 |   1004 | hero    |
++--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from rating;
++--------+-----------+
+| mov_id | rev_stars |
++--------+-----------+
+|   1001 | 4         |
+|   1002 | 2         |
+|   1003 | 5         |
+|   1004 | 1         |
++--------+-----------+
+4 rows in set (0.01 sec)
+
+mysql> 
+
+//queries now
+
+1.List the titles of all movies directed by ‘Hitchcock’.
+
+mysql> select mov_title from movies 
+  where dir_id = (  select dir_id from director where dir_name="hitchcock" );
++-----------+
+| mov_title |
++-----------+
+| akash     |
++-----------+
+1 row in set (0.00 sec)
+
+2.Find the movie names where one or more actors acted in two or more movies.
+mysql> select mov_title from movies m,movie_cast mv 
+  where m.mov_id=mv.mov_id 
+  and 
+  act_id in (select act_id from movie_cast group by act_id having count(act_id)>1)
+  group by mov_title having count(*)>1;
++------------+
+| mov_title  |
++------------+
+| bahubali-1 |
++------------+
+1 row in set (0.00 sec)
+
+3.List all actors who acted in a movie before 2000 and also in a movie after 2015 (use JOIN operation).
+mysql> select act_name,mov_title,mov_year from actor a
+    -> join movie_cast mc on a.act_id=mc.act_id 
+    -> join movies m on mc.mov_id=m.mov_id
+    -> where m.mov_year not between 2000 and 2015;
++----------+------------+----------+
+| act_name | mov_title  | mov_year |
++----------+------------+----------+
+| anushka  | bahubali-2 |     2017 |
++----------+------------+----------+
+1 row in set (0.01 sec)
+
+4. Find the title of movies and number of stars for each movie that has at least one rating and find the highest number of stars that movie received. Sort the result by movie title.
+
+mysql> select mov_title,max(rev_stars) from movies
+    -> inner join rating using (mov_id) group by mov_title
+    -> having max(rev_stars)>0 order by mov_title;
++------------+----------------+
+| mov_title  | max(rev_stars) |
++------------+----------------+
+| akash      | 5              |
+| bahubali-1 | 2              |
+| bahubali-2 | 4              |
+| war house  | 1              |
++------------+----------------+
+4 rows in set (0.00 sec)
+
+5.Update rating of all movies directed by ‘Steven Spielberg’ to 5KL
+
+mysql> update rating set rev_stars=5 
+    -> where mov_id in (select mov_id from movies where dir_id in(select dir_id from director where dir_name="steven spielberg"));
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from rating;
++--------+-----------+
+| mov_id | rev_stars |
++--------+-----------+
+|   1001 | 4         |
+|   1002 | 2         |
+|   1003 | 5         |
+|   1004 | 5         |
++--------+-----------+
+4 rows in set (0.00 sec)
+
+
