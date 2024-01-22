@@ -1,6 +1,6 @@
 package puppy
 import "fmt"
-const a=5;
-func test(){
+const A=5;
+func Test(){
   fmt.Println(a);
   }
