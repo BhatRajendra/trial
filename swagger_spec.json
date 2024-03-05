@@ -1,0 +1,135 @@
+//completed 2 get routes
+// /info and /users route
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "glue-api",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "servers": [],
+    "paths": {
+        "/api/v1/info": {
+            "get": {
+                "description": "returns the info of the glue-api",
+                "parameters": [
+                    {
+                        "name": "jwt token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "if user is authenticated, returns glue-api info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "info": {
+                                            "type": "string",
+                                            "example": "Glue Api Interface!"
+                                        },
+                                        "version": {
+                                            "type": "string",
+                                            "description": "contains the value of the current verison of the api",
+                                            "example": "1.0.0"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "if user is not authenticated, returns an error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user": {
+            "get": {
+                "description": "returns the userinfo value of the current user",
+                "parameters": [
+                    {
+                        "name": "jwt token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "if user is authenticated, returns the user info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "ajlkj1345jlajf"
+                                        },
+                                        "screen name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "avatar url": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": "https://example.com/avatar.png"
+                                        },
+                                        "chat id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "aksjfwie123445"
+                                        },
+                                        "phone number": {
+                                            "type": "string",
+                                            "example": "123-789-4560"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "if user is not authenticated, returns an error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
